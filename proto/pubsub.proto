@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package proto;
+option go_package = "./proto";
+
+service pubsub {
+  rpc publish (PublishRequest) returns (PublishResponse) {}
+  rpc subscribe (SubscribeRequest) returns (stream SubscribeResponse) {}
+}
+
+// Topic definition
+
+message Topic {
+    string topicName = 1;
+}
+
+// Message definition
+message Message {
+    string id = 1;
+    string content =2;
+}
+
+message PublishRequest {
+  Topic topic =1;
+  Message message = 2;
+}
+
+
+message PublishResponse {
+  message Success{}
+
+  message Failure{
+    string reason = 1;
+  }
+
+  oneof status {
+    Success success = 1;
+    Failure failure = 2;
+  }
+
+}
+// the message for Subscribe request
+message SubscribeRequest { repeated Topic topic = 1; }
+
+// The response message for subscribe
+message SubscribeResponse { Message msg = 1; }
