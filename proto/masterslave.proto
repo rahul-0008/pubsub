@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package proto;
+option go_package = "./proto";
+
+import "proto/pubsub.proto";
+
+service masterService {
+    rpc subscribeMaster (SlaveSubscribeRequest) returns (stream SlaveSubscribeResponse) {};
+}
+
+
+message SlaveSubscribeRequest {}
+
+message SlaveSubscribeResponse{
+    Topic topic = 1;
+    Message message = 2;
+}
+
